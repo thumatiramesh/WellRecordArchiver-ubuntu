@@ -1,0 +1,102 @@
+version: '3.5'
+
+services:
+
+  # ---------------------------- Traefik ---------------------------- #
+  traefik:
+    image: traefik:v1.6
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - web
+    labels:
+      - traefik.frontend.rule=Host:${TRAEFIK_DOMAIN}
+      - traefik.acme.domains=${TRAEFIK_DOMAIN}
+      - traefik.port=8008
+      - backup
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.toml:/traefik.toml
+      - ./acme.json:/acme.json
+      - traefik-tmp-data:/tmp
+    container_name: traefik
+
+
+  # ---------------------------- Portainer ---------------------------- #
+  portainer:
+    image: portainer/portainer:1.21.0
+    restart: always
+    networks:
+      - web
+    labels:
+      - traefik.frontend.rule=Host:${PORTAINER_DOMAIN}
+      - traefik.acme.domains=${PORTAINER_DOMAIN}
+      - backup
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - portainer-data:/data
+    container_name: portainer
+
+  # ---------------------------- Fscrawler + Elasticsearch -------------------- #
+  fscrawler:
+    image: custom/fscrawler
+    restart: always
+    build: ./coordinator/fscrawler
+    networks:
+      - web
+    labels:
+      - traefik.enable=false
+    volumes:
+      - ./jobs:/runtime/jobs
+    container_name: fscrawler
+
+  elasticsearch:
+    image: elasticsearch:6.5.3
+    restart: always
+    networks:
+      - web
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms256m -Xmx256m
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    labels:
+      - traefik.enable=false
+      - backup
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    container_name: elasticsearch
+
+  kibana:
+    image: kibana:6.5.3
+    restart: always
+    networks:
+      - web
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    labels:
+      - traefik.frontend.rule=Host:${KIBANA_DOMAIN}
+      - traefik.acme.domains=${KIBANA_DOMAIN}
+      - traefik.port=5601
+    depends_on:
+      - elasticsearch
+    container_name: kibana
+
+
+
+
+# -------------------  Volumes + Network ----------------- #
+volumes:
+  traefik-tmp-data:
+  portainer-data:
+  elasticsearch-data:
+
+
+networks:
+  web:
