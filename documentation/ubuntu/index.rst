@@ -10,9 +10,10 @@ Install the services
 
 .. code-block:: bash
 
-    git clone https://gitlab.com/geolinkis/wellrecordarchiver-rishi.git
-    mv wellrecordarchiver-rishi/ services
+    git clone https://gitlab.com/geolinkis/WellRecordArchiver-ubuntu.git
+    mv WellRecordArchiver-ubuntu/ services
 
+    cd services 
     cp .env-sample .env
 
     rm acme.json
