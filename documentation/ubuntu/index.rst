@@ -29,7 +29,7 @@ Add Files to Index
 .. code-block:: bash
 
     cd ~
-    git clone wellrecordarchiver-files-to-index
+    git clone https://gitlab.com/geolinkis/wellrecordarchiver-files-to-index.git
 
 
 Modify fscrawler paths
