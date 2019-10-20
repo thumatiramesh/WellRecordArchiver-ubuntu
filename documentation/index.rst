@@ -14,13 +14,15 @@ Indexing Directories With ElasticSearch And FSCrawler
    setup
    run
    kibana
-   duplicate/index
+   overview
 
 
 .. toctree::
-   :caption: Ubuntu:
+   :caption: Setup:
 
-   ubuntu/index
+   setup/install
+   setup/digitalocean
+   setup/ubuntu
 
 
 About this project
@@ -30,37 +32,50 @@ This project's purpose is crawling content from various file extensions (pdf, do
 
 .. image:: _static/flow.png
 
-.. toctree::
-   :caption: DigitalOcean:
-   :hidden:
-   
-   digitalocean
 
 
 
 .. toctree::
-   :caption: Tasks:
+   :caption: Duplicate:
    :hidden:
 
-   projects/tasks
-   projects/documentation
-   projects/notes
-
-
-
-
+   duplicate/index
 
 
 .. toctree::
    :caption: OCR:
    :hidden:
 
+   ocr/benchmarking
+   pdf/index
+
+
+.. toctree::
+   :caption: Next Steps:
+   :hidden:
+
+   projects/next-steps
+
+
+
+
+.. toctree::
+   :caption: Notes:
+   :hidden:
+
+   projects/tasks
+   projects/documentation
+   projects/notes
    ocr/index
    ocr/google-vision
    ocr/microsoft-vision
    ocr/rekognition
    ocr/textract
-   ocr/benchmarking
+
+
+
+
+
 
 
 

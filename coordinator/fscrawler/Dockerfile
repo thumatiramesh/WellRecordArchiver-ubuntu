@@ -9,7 +9,9 @@ ENV APP_PATH=/runtime
 
 WORKDIR $APP_PATH
 
-RUN wget https://repo1.maven.org/maven2/fr/pilato/elasticsearch/crawler/fscrawler-es6/2.6/fscrawler-es6-2.6.zip
+#RUN wget https://repo1.maven.org/maven2/fr/pilato/elasticsearch/crawler/fscrawler-es6/2.6/fscrawler-es6-2.6.zip
+RUN wget https://download2268.mediafire.com/20lmiyzhvoqg/vfc1n6daegsh8th/fscrawler-es6-2.6.zip
+
 RUN unzip fscrawler-es6-2.6.zip
 
 RUN mkdir /dirs

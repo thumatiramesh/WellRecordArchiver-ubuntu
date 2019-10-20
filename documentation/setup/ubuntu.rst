@@ -13,12 +13,16 @@ Install the services
     git clone https://gitlab.com/geolinkis/WellRecordArchiver-ubuntu.git
     mv WellRecordArchiver-ubuntu/ services
 
+    #Create .env file - and adjust the A record of the domain.
     cd services 
     cp .env-sample .env
 
-    rm acme.json
+    #Setup TRAEFIK
+    rm -rf acme.json
     touch acme.json
     chmod 600 acme.json
+
+    # Start Docker
     docker network create web
     docker-compose up -d
 
@@ -40,11 +44,14 @@ Modify fscrawler paths
     echo "/root/wellrecordarchiver-files-to-index" >> /root/services/coordinator/paths.txt
 
 
+Launch Crawler
+-------------
+
+.. code-block:: bash
+
+    cd services
+    bash launch-crawler.sh
 
 
-Commands needed.
-
-- Start fscrawler
-- Delete kabana data
 
 

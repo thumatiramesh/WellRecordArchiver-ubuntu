@@ -1,31 +1,46 @@
 {
-  	"name" : "${JOB_NAME}",
-  	"fs" : {
-    	"url" : "${JOB_PATH}",
+        "name" : "${JOB_NAME}",
+        "fs" : {
+        "url" : "${JOB_PATH}",
+        "checksum": "SHA1",
       "index_content" : true,
       "index_folders" : false,
       "filename_as_id" : true,
       "continue_on_error" : true,
+          "custom_ocr_enabled" : true,
+          "custom_ocr_provider_name" : "Microsoft",
+          "custom_ocr_subscription_key" : "5d5f7f549f08424cb0326ad157c5c879",
+          "custom_ocr_provider_url": "https://brs.cognitiveservices.azure.com//vision/v2.0/read/core/asyncBatchAnalyze",
       "pdf_ocr" : false,
-    	"includes" : [
+
+                "custom_ocr_includes" : [
+                "*/*.pdf",
+                "*/*.jpg",
+                "*/*.jpeg",
+                "*/*.png"
+                ],
+
+        "includes" : [
         "*/*.pdf",
+                "*/*.jpg",
+                "*/*.jpeg",
+                "*/*.png",
         "*/*.csv",
         "*/*.doc",
         "*/*.xls",
         "*/*.xlsx",
         "*/*.txt",
-	      "*/*.las"
-	    ],
+              "*/*.las"
+            ],
       "excludes": [
         "*/*.zip"
       ]
-  	},
-  	"elasticsearch" : {
+        },
+        "elasticsearch" : {
       "index" : "wellrecord",
       "pipeline" : "path-pipeline",
-    	"nodes" : [
-  			{ "url" : "http://elasticsearch:9200" }
-		  ]
-  	}
+        "nodes" : [
+                        { "url" : "http://elasticsearch:9200" }
+                  ]
+        }
 }
-

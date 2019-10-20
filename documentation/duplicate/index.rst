@@ -1,8 +1,8 @@
 .. _duplication:
 
-======================================
-Task 1: Detect duplicate files/folders
-======================================
+======================
+Detect duplicate files
+======================
 
 Generally, Duplicate files in the sense the files have absolutely identical content, size and extensions but might have different file names. Having so many duplicate files creates a mess and disarray in the system.
 
@@ -62,3 +62,26 @@ Quering in Kibana to find duplicates files based on the checksum value.
 
 
 A bucket mainly consists of a key i.e, ``checksum`` and a document. When the aggregation is executed, the documents are placed in the respective bucket. So finally we should have a list of buckets, each with a list of files.
+
+
+.. image:: Dev-Tools.png
+
+
+.. image:: dev-tools-duplicate-key.png
+
+Then grab a checksum and query for that.
+
+
+
+.. code-block:: bash
+
+ file.checksum:"4c9e8f5383bc8a9aaca9fd2821525724e116f10b"
+
+
+.. image:: duplicate.png
+
+
+
+TEST URL:  https://kibana.geolinkis.bowriverstudio.com/app/kibana#/discover?_g=()&_a=(columns:!(file.url,content,file.checksum),index:'35b4d770-f353-11e9-9b29-7300828b605e',interval:auto,query:(language:lucene,query:'file.checksum:"4c9e8f5383bc8a9aaca9fd2821525724e116f10b"'),sort:!(_score,desc))
+
+

@@ -1,5 +1,8 @@
+.. _ocr_benchmarking:
+
+
 ===============================
-Task 2: Benchmark OCR Libraries
+Benchmark OCR Libraries
 ===============================
 
 As per my detailed research about to find best and strongest OCR libraries in the current market, I found that Microsoft and Google did best by our sample data among Amazon Rekognition,

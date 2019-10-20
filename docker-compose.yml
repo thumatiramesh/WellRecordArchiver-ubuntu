@@ -2,6 +2,37 @@ version: '3.5'
 
 services:
 
+  # --------------------------- Coordinator + EK ------------------------ #
+  coordinator:
+    image: custom/coordinator
+    build: ./coordinator
+    networks:
+      - web
+    environment:
+      - 'JOBS_DIRECTORY=${DIR}/coordinator/jobs'
+    volumes:
+      - ./coordinator:/coordinator/
+      - //var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - elasticsearch
+    entrypoint: tail -f /dev/null
+    container_name: coordinator
+
+  kibana:
+    image: kibana:6.5.3
+    restart: always
+    networks:
+      - web
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    labels:
+      - traefik.frontend.rule=Host:${KIBANA_DOMAIN}
+      - traefik.acme.domains=${KIBANA_DOMAIN}
+      - traefik.port=5601
+    depends_on:
+      - elasticsearch
+    container_name: kibana
+
   # ---------------------------- Traefik ---------------------------- #
   traefik:
     image: traefik:v1.6
@@ -40,23 +71,15 @@ services:
     container_name: portainer
 
   # ---------------------------- Fscrawler + Elasticsearch -------------------- #
-  fscrawler:
-    image: custom/fscrawler
-    restart: always
-    build: ./coordinator/fscrawler
-    networks:
-      - web
-    labels:
-      - traefik.enable=false
-    volumes:
-      - ./jobs:/runtime/jobs
-    container_name: fscrawler
-
   elasticsearch:
     image: elasticsearch:6.5.3
     restart: always
     networks:
       - web
+    ports:
+      - 9200:9200
+    expose:
+      - 9200
     environment:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
@@ -73,24 +96,6 @@ services:
       - elasticsearch-data:/usr/share/elasticsearch/data
     container_name: elasticsearch
 
-  kibana:
-    image: kibana:6.5.3
-    restart: always
-    networks:
-      - web
-    environment:
-      - ELASTICSEARCH_URL=http://elasticsearch:9200
-    labels:
-      - traefik.frontend.rule=Host:${KIBANA_DOMAIN}
-      - traefik.acme.domains=${KIBANA_DOMAIN}
-      - traefik.port=5601
-    depends_on:
-      - elasticsearch
-    container_name: kibana
-
-
-
-
 # -------------------  Volumes + Network ----------------- #
 volumes:
   traefik-tmp-data:
@@ -100,3 +105,4 @@ volumes:
 
 networks:
   web:
+    external: true
