@@ -44,21 +44,18 @@ Quering in Kibana to find duplicates files based on the checksum value.
 
 .. code:: json
 
-  {
-     "aggs": {
-    "duplicate": {
-      "terms": {
-        "field": "file.checksum",
-        "min_doc_count": 2
-      },
-      "aggs": {
-        "duplicate list": {
-          "top_hits": {
+    GET wellrecord/_search
+    {
+       "aggs": {
+       "duplicate": {
+          "terms": {
+                "field" : "file.checksum",
+                "min_doc_count": 2
           }
-        }
-      }
+          }
+       }
     }
-  }
+
 
 
 A bucket mainly consists of a key i.e, ``checksum`` and a document. When the aggregation is executed, the documents are placed in the respective bucket. So finally we should have a list of buckets, each with a list of files.
